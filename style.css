@@ -1,0 +1,135 @@
+#gameboard
+{
+    display: grid;
+    grid-template-columns: 1.75fr repeat(9, 1fr) 1.75fr;
+    grid-template-rows: 150px repeat(9, 75px) 150px;
+    background-color: rgb(189, 210, 212);
+    font-family: 'Changa', sans-serif;
+    color: rgb(28, 31, 28);
+}
+section{
+    border: 2px black solid;
+    text-align: center;
+    font-size: small;
+}
+
+#monopoly
+{
+    border: 2px black solid;
+    grid-row: 2/11;
+    grid-column: 2/11;
+    text-align: center;
+    vertical-align: middle;
+}
+#monopoly>h1
+{
+    font-family: 'Vollkorn SC', serif; 
+}
+.playerIcon
+{
+    width: 30px;
+    border-radius: 10px;
+    margin-top: 10px;
+    border: 3px dotted black;
+}
+
+.activePlayer{
+    border: white dotted 10px;
+
+}
+
+header {
+    font-size: 56px;
+    text-align: center;
+    border-bottom: 40px lightslategray solid;
+    margin-bottom: 20px;
+    text-align: left;
+    font-family: 'Vollkorn SC', serif; 
+}
+.die{
+    width: 50px;
+    border-radius: 10px;
+    border: solid green 3px;
+    /* display: inline-block; */
+}
+figure{
+    display: inline-block;
+}
+
+#grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+    margin: auto;
+    /* height: 250px; */
+}
+
+.amount{
+    background-color: darkgreen;
+    color: aquamarine;
+    width: 50%;
+    height: 30%;
+    margin: auto;
+    border-radius: 50px;
+    /* padding-top: 30px; */
+}
+.playerDiv{
+    padding: 5%;
+    border-radius: 5%;
+    width: 80%;
+    margin: 10px auto;
+}
+.btn{
+    background-color: darkslategray;
+    color: aquamarine;
+    height: 50px;
+    width: 150px;
+    font-family: 'Changa', sans-serif;
+    border-radius: 50px;
+    font-size: medium;
+    margin:auto 25px;
+}
+.btn:hover{
+    box-shadow: 0 0 20px 0px black;
+}
+.btn:active{
+    color: white;
+    box-shadow: 0 0 20px 0px aquamarine;
+}
+.red{
+    
+    border-bottom: solid rgb(156, 22, 22) 40px;
+}
+.yellow
+{
+    border-bottom: solid rgb(179, 155, 53) 40px;
+
+}
+.orange{
+    border-right: solid rgb(214, 91, 9) 40px;
+    
+}
+.purple
+{
+    border-right: solid rgb(92, 8, 92) 40px;    
+  
+}
+.lightblue
+{
+    border-top: solid rgb(148, 171, 185) 40px;
+
+}
+.brown
+{
+    border-top: solid rgb(83, 44, 38) 40px;
+
+}
+.green
+{
+    border-left: solid rgb(43, 95, 43) 40px;
+
+}
+.blue{
+    border-left: solid rgb(46, 46, 119) 40px;
+
+}
