@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 /************************************************************
  
  *           Declare Gameplay Variables
@@ -1260,6 +1260,5 @@ function ShowRent()
          alert("Rent will be $" + amountToPay);
       }
    }
-   
->>>>>>> 6762a12102d0e07a199f76604dd1620ab158172c
+
 }
