@@ -709,7 +709,7 @@ function CalculateRent(CurrentSpace, DiceTotal)
       }
       
    return amountToPay;
-=======
+
 /************************************************************
  
  *           Declare Gameplay Variables
