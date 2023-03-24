@@ -1,6 +1,5 @@
-
 /************************************************************
- 
+
  *           Declare Gameplay Variables
 
 ************************************************************/
@@ -10,7 +9,7 @@ let playerTurnLoop = 0;
 let numberOfPlayers = 2;
 //Create a player object to store information
 let Players = [{money: 3000, spaceX: 11, spaceY: 11, color: "#eee",
-playerDiv: "player1div", amount: "player1amt", img: "images/thimble.png", jail:false, turnsInJail:0, alive:true}, 
+playerDiv: "player1div", amount: "player1amt", img: "images/thimble.png", jail:false, turnsInJail:0, alive:true},
 {money: 3000, spaceX: 11, spaceY: 11, color: "#eee",
 playerDiv: "player2div", amount: "player2amt", img: "images/cat.png", jail:false, turnsInJail:0, alive:true},
 {money: 3000, spaceX: 11, spaceY: 11, color: "#eee",
@@ -42,7 +41,7 @@ let Suites = [{number: "1111", name: "go", monetaryValue: -200, owningPlayer: 0,
 
 
 /***********************************************************
- 
+
       Organize the Board and Display Monetary Value
 
 ***********************************************************/
@@ -50,7 +49,7 @@ let Suites = [{number: "1111", name: "go", monetaryValue: -200, owningPlayer: 0,
 let x = 1;
 let y = 1;
 let value = -1;
-var playerSpot; 
+var playerSpot;
 var playerColors = ["#e04a59", "#76bbe3", "#dbc56b", "#b3dea6", "#b3ade0", "#e6aee3"];
 
 for(let square = 0; square < suites.length; square++)
@@ -59,14 +58,14 @@ for(let square = 0; square < suites.length; square++)
    y = suites[square].getAttribute("suite").substring(0, 2);
    x = suites[square].getAttribute("suite").substring(2, 4);
    value = suites[square].getAttribute("val");
-   
+
    suites[square].style.gridColumn = x;
    suites[square].style.gridRow = y;
- 
+
    if(square != 0)
    {
       Suites.push({number: suites[square].getAttribute("suite"), name: suites[square].getAttribute("id"), monetaryValue: value, owningPlayer: 0, timeLandedOn:0});
-   }  
+   }
 
    if(value > 50)
    {
@@ -98,7 +97,7 @@ function LoadPlayers()
 {
    var playerGrid = document.getElementById("grid");
    playerGrid.innerHTML = "";
-   
+
    //Assign each color to coresponding player
    for(let pl = 0; pl < numberOfPlayers; pl++)
    {
@@ -108,7 +107,7 @@ function LoadPlayers()
       document.getElementById(Players[pl].playerDiv).style.backgroundColor = Players[pl].color;
       document.getElementById("go").innerHTML += "<img class = 'player"+ (pl+1) +"Icon playerIcon' src='./"+ Players[pl].img+"'>";
    }
-   
+
    switch(numberOfPlayers)
    {
       case '2':
@@ -132,15 +131,15 @@ function LoadPlayers()
             playerGrid.style.gridTemplateRows = "auto auto";
       break;
    }
-      
+
       document.getElementById(Players[playerTurn-1].playerDiv).classList.add("activePlayer");
-      
+
    }
 
 /*****************************************************************
-* 
+*
 *                          Game Play
-* 
+*
 ****************************************************************/
    document.getElementById("RollDice").onclick = ManagePlayerTurn;
    document.getElementById("EndTurn").onclick = IncrementPlayer;
@@ -153,7 +152,7 @@ function ManagePlayerTurn()
    //Disable Roll Dice Button
    document.getElementById("RollDice").onclick = null;
    document.getElementById("RollDice").style.color = "darkslategray";
-   
+
 
    //Roll Dice and Parse Results
    let roll1 = RollDice();
@@ -166,7 +165,7 @@ function ManagePlayerTurn()
    {
       //Save player stayed in Jail
       Players[playerTurn - 1].turnsInJail++;
-      
+
       //Enable End Turn Button
       document.getElementById("RollDice").innerHTML = "End Turn";
       document.getElementById("RollDice").style.color = "";
@@ -183,11 +182,11 @@ function ManagePlayerTurn()
       {
          setTimeout(MovePlayer, 200 * move);
       }
-      
+
       //Manage The square the player landed on
       setTimeout(ManageSquare, 200 * (roll1 + roll2));
-      
-      
+
+
       //Player Doesnt Go Again
       //If no doubles where rolled or if soubles where rolled from inside jail
       if(roll1 != roll2 || Players[playerTurn -1].jail)
@@ -196,7 +195,7 @@ function ManagePlayerTurn()
          Players[playerTurn -1].jail = false;
          //Tell Player to end turn
          setTimeout(function(){
-            
+
             document.getElementById("RollDice").innerHTML = "End Turn";
             document.getElementById("RollDice").style.color = "";
             document.getElementById("RollDice").onclick = IncrementPlayer;
@@ -206,7 +205,7 @@ function ManagePlayerTurn()
       else{
          playerTurnLoop++;
          setTimeout(function(){
-            
+
             if(!Players[playerTurn-1].alive || Players[playerTurn - 1].jail)
             {
                IncrementPlayer();
@@ -218,7 +217,7 @@ function ManagePlayerTurn()
             }
          }, 200 * (roll1 + roll2 + 1));
       }
-      
+
    }
 }
 
@@ -232,7 +231,7 @@ function ManageSquare()
 
    //Player Lands on Chance or Community Chest
    if(Suites[suiteLocation].monetaryValue == -1)
-   {  
+   {
       Players[playerTurn - 1].money += ManageChance();
       //Check if this makes player loose
       if(Players[playerTurn - 1].money < 0)
@@ -243,7 +242,7 @@ function ManageSquare()
    //Just Visiting Jail
    else if(Suites[suiteLocation].name == "jail")
    {
-      
+
    }
    //Player Sent to jail
    else if(Suites[suiteLocation].name == "gotojail")
@@ -253,14 +252,14 @@ function ManageSquare()
       //Update Player Location
       Players[playerTurn - 1].spaceX = 1;
       Players[playerTurn - 1].spaceY = 11;
-      
+
       //Add Player back to board
       document.getElementById("jail").innerHTML += "<img class = 'player"+ playerTurn +"Icon playerIcon' src='./"+ Players[playerTurn - 1].img+"'>";
       alert("Go directly to jail! Do not pass go, do not collect $200");
-      
+
       //alert Player theyre in Jail
       Players[playerTurn - 1].jail = true;
-      
+
    }
    //If Player Landed on a Ownable Property
    else if (Suites[suiteLocation].name != "go" && Suites[suiteLocation].name != "freeparking")
@@ -291,7 +290,7 @@ function ManageSquare()
             Players[playerTurn - 1].money -= Suites[suiteLocation].monetaryValue;
             Suites[suiteLocation].owningPlayer = playerTurn;
             document.getElementById(Suites[suiteLocation].name).style.backgroundColor = Players[playerTurn - 1].color;
-            
+
          }
 
       }
@@ -326,7 +325,7 @@ function ManageSquare()
             amountToPay = (roll1 + roll2) * 5;
          }
          else{
-            
+
             amountToPay = Math.round((Suites[suiteLocation].monetaryValue) * 0.1);
             for(let land = 1; land < Suites[suiteLocation].timeLandedOn; land++)
             {
@@ -355,9 +354,9 @@ function ManageSquare()
    for(let pl = 0; pl < numberOfPlayers; pl++)
    {
       document.getElementById(Players[pl].amount).innerHTML = "$" + Players[pl].money;
-      
+
    }
-   
+
 }
 
 /***********************************************
@@ -370,18 +369,18 @@ function IncrementPlayer()
    do
    {
       document.getElementById(Players[playerTurn-1].playerDiv).classList.remove("activePlayer");
-      
+
       playerTurn++;
       if(playerTurn > numberOfPlayers)
       {
          playerTurn = 1;
       }
-      
-      document.getElementById(Players[playerTurn-1].playerDiv).classList.add("activePlayer");  
-   
+
+      document.getElementById(Players[playerTurn-1].playerDiv).classList.add("activePlayer");
+
       deadCounter++;
    }while(!Players[playerTurn -1].alive && deadCounter < 10);
-   
+
    if(deadCounter > 9)
    {
       document.getElementById(Players[playerTurn-1].playerDiv).classList.remove("activePlayer");
@@ -390,24 +389,24 @@ function IncrementPlayer()
    }
    else
    {
-   
+
       //Check if Player is in Jail
    if(Players[playerTurn -1].jail)
    {
       document.getElementById("subBtn").innerHTML = "Pay Bail ($50)";
       document.getElementById("subBtn").onclick = PayBail;
-      
+
    }
    else
    {
       document.getElementById("subBtn").innerHTML = "Buy Houses";
       document.getElementById("subBtn").onclick = "";
    }
-   
+
    if(Players[playerTurn -1].turnsInJail >=3)
    {
       document.getElementById("RollDice").onclick = PayBail;
-      document.getElementById("RollDice").innerText = "Pay Bail($50)"; 
+      document.getElementById("RollDice").innerText = "Pay Bail($50)";
    }
    else
    {
@@ -417,7 +416,7 @@ function IncrementPlayer()
    }
 
    }
-   
+
 }
 
 /***********************************************
@@ -425,7 +424,7 @@ function IncrementPlayer()
  **********************************************/
 function PayBail()
 {
-      //Set Player Free and Charge Money 
+      //Set Player Free and Charge Money
       Players[playerTurn -1].jail = false;
       Players[playerTurn - 1].money -= 50;
       Players[playerTurn -1].turnsInJail = 0;
@@ -433,7 +432,7 @@ function PayBail()
       //Set Supplementray Button Back to buy houses
       document.getElementById("subBtn").innerHTML = "Buy Houses";
       document.getElementById("subBtn").onclick = "";
-      //Set 
+      //Set
       document.getElementById("RollDice").onclick = ManagePlayerTurn;
       document.getElementById("RollDice").innerText = "Roll Dice";
 
@@ -487,13 +486,13 @@ function MovePlayer()
 
       //Get suite #
       playerSuite = FindSuite(AssembleSuite(Players[playerTurn - 1].spaceX, Players[playerTurn - 1].spaceY ));
-         
-       
+
+
       //Remove Old Player Icon
       document.getElementsByClassName("player"+ playerTurn +"Icon")[0].remove();
 
       suites[playerSuite].innerHTML += "<img class = 'player"+ playerTurn +"Icon playerIcon' src='./"+ Players[playerTurn - 1].img+"'>";
-   
+
 }
 
 /************************************************
@@ -508,7 +507,7 @@ function AssembleSuite(X, Y)
    else if (Y < 10)
    {
       return "0" + Y.toString() + X.toString();
-      
+
    }
    else if (X < 10)
    {
@@ -517,7 +516,7 @@ function AssembleSuite(X, Y)
    else
    {
       return Y.toString() + X.toString();
-      
+
    }
 }
 
@@ -525,7 +524,7 @@ function ParseSuite(suiteNumber)
 {
    spaceY = suiteNumber.substring(0, 2);
    spaceX = suiteNumber.getAttribute("suite").substring(2, 4);
-   
+
    return {x: spaceX, y: spaceY};
 }
 
@@ -602,21 +601,21 @@ function ShowRent()
          {
             amountToPay += 25;
          }
-         
+
       }
       else if(Suites[CurrentSpace].name == "electric" || Suites[CurrentSpace].number == "water")
       {
          amountToPay = -1;
       }
       else{
-         
+
          amountToPay = Math.round((Suites[CurrentSpace].monetaryValue) * 0.1);
          for(let land = 1; land < Suites[CurrentSpace].timeLandedOn; land++)
          {
             amountToPay += Math.round(amountToPay * 0.2);
          }
       }
-      
+
       if(amountToPay == -1)
       {
          alert("Rent will be 5x dice roll");
@@ -626,7 +625,7 @@ function ShowRent()
          alert("Rent will be $" + amountToPay);
       }
    }
-   
+
 }
 
 function CalculateRent(CurrentSpace, DiceTotal)
@@ -680,7 +679,7 @@ function CalculateRent(CurrentSpace, DiceTotal)
                amountToPay *= 2;
             }
          }
-         
+
       }
       else if(Suites[CurrentSpace].name == "electric" || Suites[CurrentSpace].number == "water")
       {
@@ -707,6 +706,6 @@ function CalculateRent(CurrentSpace, DiceTotal)
             amountToPay += Math.round(amountToPay * 0.2);
          }
       }
-      
+
    return amountToPay;
    }

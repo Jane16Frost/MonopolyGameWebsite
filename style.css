@@ -23,7 +23,7 @@ section{
 }
 #monopoly>h1
 {
-    font-family: 'Vollkorn SC', serif; 
+    font-family: 'Vollkorn SC', serif;
 }
 .playerIcon
 {
@@ -44,7 +44,7 @@ header {
     border-bottom: 40px lightslategray solid;
     margin-bottom: 20px;
     text-align: left;
-    font-family: 'Vollkorn SC', serif; 
+    font-family: 'Vollkorn SC', serif;
 }
 .die{
     width: 50px;
@@ -97,7 +97,7 @@ figure{
     box-shadow: 0 0 20px 0px aquamarine;
 }
 .red{
-    
+
     border-bottom: solid rgb(156, 22, 22) 40px;
 }
 .yellow
@@ -107,12 +107,12 @@ figure{
 }
 .orange{
     border-right: solid rgb(214, 91, 9) 40px;
-    
+
 }
 .purple
 {
-    border-right: solid rgb(92, 8, 92) 40px;    
-  
+    border-right: solid rgb(92, 8, 92) 40px;
+
 }
 .lightblue
 {
