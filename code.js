@@ -539,6 +539,17 @@ function FindSuite(suiteNumber)
    }
 }
 
+function BuyHouses()
+{
+
+}
+
+function Trade()
+{
+
+}
+
+
 /************************************************
  *    Managed the chance and comunity chest deck
  *************************************************/
@@ -708,4 +719,4 @@ function CalculateRent(CurrentSpace, DiceTotal)
       }
 
    return amountToPay;
-   }
+}
