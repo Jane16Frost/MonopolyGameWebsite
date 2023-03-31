@@ -184,7 +184,7 @@ function ManagePlayerTurn()
       }
 
       //Manage The square the player landed on
-      setTimeout(ManageSquare, 200 * (roll1 + roll2));
+      setTimeout(()=>{ManageSquare(roll1 + roll2)}, 200 * (roll1 + roll2));
 
 
       //Player Doesnt Go Again
@@ -224,7 +224,7 @@ function ManagePlayerTurn()
 /***********************************************
  * Control the square the player landed on
  ***********************************************/
-function ManageSquare()
+function ManageSquare(diceTotal)
 {
    //Get What square the player landed on
    let suiteLocation = FindSuite(AssembleSuite(Players[playerTurn - 1].spaceX, Players[playerTurn - 1].spaceY));
@@ -297,41 +297,10 @@ function ManageSquare()
       //If Property is owned Calculate and Pay Rent
       else
       {
-         let amountToPay;
          //Calculate Rent
-         if(Suites[suiteLocation].number.endsWith('06') || Suites[suiteLocation].number.startsWith('06'))
-         {
-            amountToPay = 0;
-            if(Suites[5].owningPlayer == Suites[suiteLocation].owningPlayer)
-            {
-               amountToPay += 25;
-            }
-            if(Suites[15].owningPlayer == Suites[suiteLocation].owningPlayer)
-            {
-               amountToPay += 25;
-            }
-            if(Suites[25].owningPlayer == Suites[suiteLocation].owningPlayer)
-            {
-               amountToPay += 25;
-            }
-            if(Suites[35].owningPlayer == Suites[suiteLocation].owningPlayer)
-            {
-               amountToPay += 25;
-            }
+         let amountToPay = CalculateRent(suiteLocation, diceTotal);
+         
 
-         }
-         else if(Suites[suiteLocation].name == "electric" || Suites[suiteLocation].number == "water")
-         {
-            amountToPay = (roll1 + roll2) * 5;
-         }
-         else{
-
-            amountToPay = Math.round((Suites[suiteLocation].monetaryValue) * 0.1);
-            for(let land = 1; land < Suites[suiteLocation].timeLandedOn; land++)
-            {
-               amountToPay += Math.round(amountToPay * 0.2);
-            }
-         }
          Players[playerTurn - 1].money -= amountToPay;
          Players[Suites[suiteLocation].owningPlayer - 1].money += amountToPay;
       }
@@ -549,6 +518,15 @@ function Trade()
 
 }
 
+function EndTrade()
+{
+   for(let square = 0; square < suites.length; square++)
+   {
+      suites[square].onclick = ShowRent;
+   }
+
+}
+
 
 /************************************************
  *    Managed the chance and comunity chest deck
@@ -589,54 +567,18 @@ function PlayerLost(badPlayer, winningPlayer)
 
 function ShowRent()
 {
-   var CurrentSpace = FindSuite(this.getAttribute("suite"));
-   let amountToPay;
-   if(Suites[CurrentSpace].owningPlayer != 0)
-   {
-      if(Suites[CurrentSpace].number.endsWith('06') || Suites[CurrentSpace].number.startsWith('06'))
-      {
-         amountToPay = 0;
-         if(Suites[5].owningPlayer == Suites[CurrentSpace].owningPlayer)
-         {
-            amountToPay += 25;
-         }
-         if(Suites[15].owningPlayer == Suites[CurrentSpace].owningPlayer)
-         {
-            amountToPay += 25;
-         }
-         if(Suites[25].owningPlayer == Suites[CurrentSpace].owningPlayer)
-         {
-            amountToPay += 25;
-         }
-         if(Suites[35].owningPlayer == Suites[CurrentSpace].owningPlayer)
-         {
-            amountToPay += 25;
-         }
+   var currentSpace = FindSuite(this.getAttribute("suite"));
 
-      }
-      else if(Suites[CurrentSpace].name == "electric" || Suites[CurrentSpace].number == "water")
+      amountToPay = CalculateRent(currentSpace, -1);
+      if(amountToPay < 0)
       {
-         amountToPay = -1;
-      }
-      else{
-
-         amountToPay = Math.round((Suites[CurrentSpace].monetaryValue) * 0.1);
-         for(let land = 1; land < Suites[CurrentSpace].timeLandedOn; land++)
-         {
-            amountToPay += Math.round(amountToPay * 0.2);
-         }
-      }
-
-      if(amountToPay == -1)
-      {
-         alert("Rent will be 5x dice roll");
+         alert("Rent will be "+ Math.abs(amountToPay) +"x dice roll");
       }
       else
       {
          alert("Rent will be $" + amountToPay);
       }
-   }
-
+   
 }
 
 function CalculateRent(CurrentSpace, DiceTotal)
